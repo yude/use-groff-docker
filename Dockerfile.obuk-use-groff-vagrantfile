@@ -1,0 +1,15 @@
+FROM ubuntu:noble
+
+RUN apt update && apt -y install git build-essential sudo curl
+RUN git clone https://github.com/obuk/use-groff /use-groff
+WORKDIR /use-groff
+
+RUN make clean apt-upgrade
+RUN make clean install
+RUN make -f groff.mk setup
+RUN make -f groff.mk clean install
+RUN make clean install
+RUN make -f perldoc-server.mk clean install-pods
+RUN make -f perldoc-server.mk clean install
+
+ENTRYPOINT ["sleep", "infinity"]
